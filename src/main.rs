@@ -1,7 +1,4 @@
-use std::{
-    fs::File,
-    io::{Read, Write},
-};
+use std::{fs::File, io::Read};
 
 use rustyline::Editor;
 
@@ -12,31 +9,27 @@ fn main() {
     test(4);
 }
 
-fn test(initial_count: usize) {
-    write_history(initial_count);
+fn test(editor_count: usize) {
+    let mut editors = Vec::new();
 
-    let mut f = File::open("history.txt").unwrap();
+    let path = format!("history/{}.txt", editor_count);
 
+    for _ in 0..editor_count {
+        editors.push(Editor::<()>::new());
+    }
+
+    for e in &mut editors {
+        e.add_history_entry(format!("A --- long line"));
+    }
+
+    for e in &mut editors {
+        e.add_history_entry(format!("B --- long line"));
+        e.append_history(&path).unwrap();
+    }
+
+    let mut f = File::open(path).unwrap();
     let mut s = String::new();
     f.read_to_string(&mut s).unwrap();
 
-    println!("---------\ncount={}\n{}", initial_count, s);
-}
-
-fn write_initial(count: usize) {
-    let mut f = File::create("history.txt").unwrap();
-
-    for _ in 0..count {
-        f.write_all(b"A --- long line\n").unwrap();
-    }
-    f.flush().unwrap();
-}
-
-fn write_history(initial_count: usize) {
-    write_initial(initial_count);
-
-    let mut e = Editor::<()>::new();
-
-    e.add_history_entry("B --- long line");
-    e.append_history("history.txt").unwrap();
+    println!("---------\ncount={}\n{}", editor_count, s);
 }
