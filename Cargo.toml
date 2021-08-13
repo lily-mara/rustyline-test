@@ -8,9 +8,9 @@ edition = "2018"
 rustyline = "8.2"
 
 [[bin]]
-name = "with-init-file"
-path = "src/with-init-file.rs"
-
-[[bin]]
 name = "only-rustyline-io"
 path = "src/only-rustyline-io.rs"
+
+[[bin]]
+name = "parallel-writes"
+path = "src/parallel-writes.rs"
