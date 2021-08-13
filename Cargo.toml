@@ -6,3 +6,11 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
 rustyline = "8.2"
+
+[[bin]]
+name = "with-init-file"
+path = "src/with-init-file.rs"
+
+[[bin]]
+name = "only-rustyline-io"
+path = "src/only-rustyline-io.rs"
