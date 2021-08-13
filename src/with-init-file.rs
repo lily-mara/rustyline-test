@@ -18,7 +18,7 @@ fn main() {
 
     let mut e = Editor::<()>::new();
 
-    e.add_history_entry(format!("B"));
+    e.add_history_entry("B");
     e.append_history(PATH).unwrap();
 
     drop(e);

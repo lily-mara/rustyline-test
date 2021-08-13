@@ -1,11 +1,14 @@
-use std::fs::remove_file;
+use std::{
+    fs::{remove_file, File},
+    io::Read,
+};
 
 use rustyline::Editor;
 
 const PATH: &str = "history/parallel.txt";
 
 fn main() {
-    remove_file(PATH).unwrap();
+    let _ = remove_file(PATH);
 
     let t = std::thread::spawn(|| {
         run();
@@ -15,10 +18,21 @@ fn main() {
 
     t.join().unwrap();
 
-    // at this point, there are duplicate lines in the history file. You can
-    // commment out this final `run` call to verify. After we call `run` the
-    // final time, the front of lines will be removed.
+    println!("After parallel writes");
+    print_contents();
+
     run();
+
+    println!("After final writes");
+    print_contents();
+}
+
+fn print_contents() {
+    let mut f = File::open(PATH).unwrap();
+    let mut s = String::new();
+
+    f.read_to_string(&mut s).unwrap();
+    println!("{}", s);
 }
 
 fn run() {
